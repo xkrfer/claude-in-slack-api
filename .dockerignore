@@ -1,0 +1,16 @@
+# 排除 .env 文件
+config/.env
+# 排除 node_modules 目录
+node_modules/
+# 排除以 .tmp 结尾的文件
+*.tmp
+.git
+.gitignore
+.idea
+Dockerfile
+LICENSE
+README.md
+test
+.github
+.dockerignore
+
