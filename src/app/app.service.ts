@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ICallback, IMessage, STATUS } from './types';
+import { ICallback, IMessage, STATUS } from '../types/types';
 import { HttpService } from '@nestjs/axios';
-import { SlackClient } from './slack.client';
-import { generateResponse } from './utils';
+import { SlackClient } from '../clients/slack.client';
+import { generateResponse } from '../utils/utils';
 
 const role_map = {
   system: 'Human',

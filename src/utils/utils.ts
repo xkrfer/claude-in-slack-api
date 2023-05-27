@@ -1,12 +1,6 @@
-import { STATUS } from './types';
-
-interface IData {
-  timestamp: number;
-  stream: boolean;
-  completion: any;
-}
-
-export function generateResponse(data: IData, status: STATUS = STATUS.STOP) {
+import {IGenerateResponseData, STATUS} from '../types/types';
+import * as path from 'path';
+export function generateResponse(data: IGenerateResponseData, status: STATUS = STATUS.STOP) {
   const { stream, completion, timestamp } = data;
   const completionTokens = completion.split(' ').length;
   const object = stream ? 'chat.completion.chunk' : 'chat.completion';
@@ -42,4 +36,10 @@ export function generateResponse(data: IData, status: STATUS = STATUS.STOP) {
       },
     ],
   };
+}
+
+
+export function getEnvPath(): string {
+  const env = process.env?.NODE_ENV === 'production' ? '.env' : '.env.local';
+  return path.resolve(process.cwd(), `./config/${env}`)
 }

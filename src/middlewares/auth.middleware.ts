@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
+import {ENV} from "../utils/const";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -12,21 +13,21 @@ export class AuthMiddleware implements NestMiddleware {
       return;
     }
     const token = authHeader.split(' ')[1];
-    if (process.env.TOKEN !== token) {
+    if (ENV.TOKEN !== token) {
       res.status(403).send({
         message: 'Invalid Token',
       });
       return;
     }
 
-    if (!process.env.SLACK_USER_TOKEN) {
+    if (!ENV.SLACK_USER_TOKEN) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         message: 'Invalid SLACK_USER_TOKEN',
       });
       return;
     }
 
-    if (!process.env.CLAUDE_BOT_ID) {
+    if (!ENV.CLAUDE_BOT_ID) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         message: 'Invalid CLAUDE_BOT_ID',
       });

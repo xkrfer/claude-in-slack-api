@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { WebClient, WebClientOptions } from '@slack/web-api';
-import { END_TEXT, MAX_RETRIES } from './const';
-import { ICallback, STATUS } from './types';
+import {END_TEXT, ENV, MAX_RETRIES} from '../utils/const';
+import { ICallback, STATUS } from '../types/types';
 @Injectable()
 export class SlackClient {
   private client: WebClient;
@@ -10,7 +10,7 @@ export class SlackClient {
 
   constructor() {
     const options: WebClientOptions = {};
-    this.client = new WebClient(process.env.SLACK_USER_TOKEN, options);
+    this.client = new WebClient(ENV.SLACK_USER_TOKEN, options);
   }
 
   async chat(text: string): Promise<void> {
@@ -32,7 +32,7 @@ export class SlackClient {
     if (!this.CHANNEL_ID) {
       try {
         const response = await this.client.conversations.open({
-          users: process.env.CLAUDE_BOT_ID,
+          users: ENV.CLAUDE_BOT_ID,
         });
         this.CHANNEL_ID = response.channel?.id as string;
       } catch (error) {
@@ -60,7 +60,7 @@ export class SlackClient {
       });
       const messages = response.messages as Array<any>;
       const filteredMessages = messages.filter(
-        (msg) => msg.user === process.env.CLAUDE_BOT_ID,
+        (msg) => msg.user === ENV.CLAUDE_BOT_ID,
       );
       const lastMessage = filteredMessages[filteredMessages.length - 1];
       const lastMessageText: string = lastMessage?.text ?? '';

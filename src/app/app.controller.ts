@@ -8,7 +8,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ICompletionsData, STATUS } from './types';
+import { ICompletionsData, STATUS } from '../types/types';
 import { Response, Request } from 'express';
 
 @Controller()

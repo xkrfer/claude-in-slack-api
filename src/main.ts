@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './app/app.module';
 import * as dotenv from 'dotenv';
-import * as path from 'path';
+import {getEnvPath} from "./utils/utils";
 async function bootstrap() {
   dotenv.config({
-    path: path.resolve(process.cwd(), './config/.env'),
+    path: getEnvPath(),
   });
   const app = await NestFactory.create(AppModule);
   app.enableCors({

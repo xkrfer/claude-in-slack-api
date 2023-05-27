@@ -7,8 +7,8 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HttpModule } from '@nestjs/axios';
-import { SlackClient } from './slack.client';
-import { AuthMiddleware } from './auth.middleware';
+import { SlackClient } from '../clients/slack.client';
+import { AuthMiddleware } from '../middlewares/auth.middleware';
 @Module({
   imports: [HttpModule],
   controllers: [AppController],

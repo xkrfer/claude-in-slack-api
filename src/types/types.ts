@@ -1,3 +1,5 @@
+import {generateResponse} from "../utils/utils";
+
 export interface IMessage {
   role: string;
   content: string;
@@ -18,4 +20,10 @@ export interface ICompletionsData {
 
 export interface ICallback {
   (message: string, status: STATUS): void;
+}
+
+export interface IGenerateResponseData {
+  timestamp: number;
+  stream: boolean;
+  completion: any;
 }
