@@ -9,10 +9,11 @@ import { AppService } from './app.service';
 import { HttpModule } from '@nestjs/axios';
 import { SlackClient } from '../clients/slack.client';
 import { AuthMiddleware } from '../middlewares/auth.middleware';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule,ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [AppService, SlackClient],
+  providers: [AppService, SlackClient,ConfigService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

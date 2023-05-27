@@ -1,10 +1,14 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import {ENV} from "../utils/const";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
+  constructor(private readonly configService: ConfigService) {}
   async use(req: Request, res: Response, next: NextFunction) {
+    const TOKEN = this.configService.get<string>('TOKEN');
+    const SLACK_USER_TOKEN = this.configService.get<string>('SLACK_USER_TOKEN');
+    const CLAUDE_BOT_ID = this.configService.get<string>('CLAUDE_BOT_ID');
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       res.status(401).send({
@@ -13,21 +17,21 @@ export class AuthMiddleware implements NestMiddleware {
       return;
     }
     const token = authHeader.split(' ')[1];
-    if (ENV.TOKEN !== token) {
+    if (TOKEN !== token) {
       res.status(403).send({
         message: 'Invalid Token',
       });
       return;
     }
 
-    if (!ENV.SLACK_USER_TOKEN) {
+    if (!SLACK_USER_TOKEN) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         message: 'Invalid SLACK_USER_TOKEN',
       });
       return;
     }
 
-    if (!ENV.CLAUDE_BOT_ID) {
+    if (!CLAUDE_BOT_ID) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         message: 'Invalid CLAUDE_BOT_ID',
       });

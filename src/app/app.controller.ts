@@ -29,11 +29,14 @@ export class AppController {
   ) {
     const { stream = false, messages = [] } = body;
     const message = await this.appService.transformMessage(messages);
+    /**
+     *  claude in slack
+     * */
     if (stream) {
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
-      return await this.appService.getChatCompletionStream(
+      return await this.appService.getSlackChatCompletionStream(
         message,
         (completion, status) => {
           res.write(`data: ${completion}\n\n`);
@@ -43,7 +46,7 @@ export class AppController {
         },
       );
     }
-    const response = await this.appService.getChatCompletion(message);
+    const response = await this.appService.getSlackChatCompletion(message);
     return res.json(response);
   }
 }

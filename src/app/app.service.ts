@@ -30,7 +30,7 @@ export class AppService {
     }, '');
   }
 
-  async getChatCompletionStream(message: string, callback: ICallback) {
+  async getSlackChatCompletionStream(message: string, callback: ICallback) {
     await this.slackClient.openChannel();
     await this.slackClient.chat(message);
     const timestamp = Math.floor(Date.now() / 1000);
@@ -50,7 +50,7 @@ export class AppService {
     });
   }
 
-  async getChatCompletion(message: string) {
+  async getSlackChatCompletion(message: string) {
     await this.slackClient.openChannel();
     await this.slackClient.chat(message);
     const timestamp = Math.floor(Date.now() / 1000);
