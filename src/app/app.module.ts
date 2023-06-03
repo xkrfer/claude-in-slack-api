@@ -10,10 +10,11 @@ import { HttpModule } from '@nestjs/axios';
 import { SlackClient } from '../clients/slack.client';
 import { AuthMiddleware } from '../middlewares/auth.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RequestLoggerMiddleware } from '../middlewares/request.logger.middleware';
 @Module({
-  imports: [HttpModule,ConfigModule.forRoot()],
+  imports: [HttpModule, ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [AppService, SlackClient,ConfigService],
+  providers: [AppService, SlackClient, ConfigService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -21,5 +22,6 @@ export class AppModule implements NestModule {
       path: '/v1/chat/completions',
       method: RequestMethod.POST,
     });
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
   }
 }

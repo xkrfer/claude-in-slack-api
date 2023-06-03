@@ -1,9 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { WebClient, WebClientOptions } from '@slack/web-api';
 import { END_TEXT, MAX_RETRIES } from '../utils/const';
 import { ICallback, STATUS } from '../types/types';
 import { ConfigService } from '@nestjs/config';
-const logger = new Logger('SlackClient');
 @Injectable()
 export class SlackClient {
   private client: WebClient;
@@ -22,7 +21,6 @@ export class SlackClient {
     if (!this.CHANNEL_ID) {
       throw new Error('Channel not found.');
     }
-
     try {
       const response = await this.client.chat.postMessage({
         channel: this.CHANNEL_ID,
@@ -73,7 +71,6 @@ export class SlackClient {
         .replace(END_TEXT, '')
         .replace(prevCompletion, '')
         .trim();
-      logger.log(`nextCompletion: \n${nextCompletion}\n`);
       if (lastMessage && !lastMessage.text.endsWith(END_TEXT)) {
         callback && callback(nextCompletion, STATUS.STOP);
         return lastMessage.text;

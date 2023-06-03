@@ -4,13 +4,13 @@ import {
   Get,
   HttpCode,
   Post,
-  Req,
   Res,
+  Logger,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ICompletionsData, STATUS } from '../types/types';
-import { Response, Request } from 'express';
-
+import { Response } from 'express';
+const logger = new Logger('AppController');
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -22,11 +22,7 @@ export class AppController {
 
   @Post('/v1/chat/completions')
   @HttpCode(200)
-  async chat(
-    @Body() body: ICompletionsData,
-    @Res() res: Response,
-    @Req() request: Request,
-  ) {
+  async chat(@Body() body: ICompletionsData, @Res() res: Response) {
     const { stream = false, messages = [] } = body;
     const message = await this.appService.transformMessage(messages);
     /**
