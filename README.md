@@ -24,7 +24,26 @@ Use the Slack API to send messages to Claude and receive his replies through the
          --name claude-api \
          xkrfer/claude-in-slack-api
     ```
-3. If you need to reverse proxy using Nginx, you will need to add the following content to your Nginx configuration file:
+3. Test
+    ```bash
+   curl --location 'http://127.0.0.1:9000/v1/chat/completions' \
+      --header 'Content-Type: application/json' \
+      --header 'Authorization: Bearer token' \
+      --data '{
+      "model": "gpt-3.5-turbo",
+      "messages": [
+         {
+         "role": "user",
+         "content": "hello"
+         }
+      ],
+      "max_tokens": 100,
+      "temperature": 1,
+      "stream": true
+   }'
+    ```
+
+4. If you need to reverse proxy using Nginx, you will need to add the following content to your Nginx configuration file:
     ```conf
     location /
     {
@@ -43,9 +62,11 @@ Use the Slack API to send messages to Claude and receive his replies through the
         proxy_hide_header Cache-Control;
     }
     ```
-4. Open [https://web.chatboxapp.xyz](https://web.chatboxapp.xyz/) and enter the address of your server, then you can chat with Claude.
+5. Open [https://web.chatboxapp.xyz](https://web.chatboxapp.xyz/) and enter the address of your server, then you can chat with Claude.
+   ![img](https://telegraph-image-pages.pages.dev/file/989383790f105834ea787.png)
 
-![img](https://telegraph-image-pages.pages.dev/file/989383790f105834ea787.png)
+## Pay attention to
+Convert this service to HTTPS in order to avoid potential errors that may arise on other tools.
 
 ## Thanks
 [yokonsan/claude-in-slack-api](https://github.com/yokonsan/claude-in-slack-api)    
