@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { WebClient, WebClientOptions } from '@slack/web-api';
-import {END_TEXT, MAX_RETRIES} from '../utils/const';
+import { END_TEXT, MAX_RETRIES } from '../utils/const';
 import { ICallback, STATUS } from '../types/types';
 import { ConfigService } from '@nestjs/config';
-
+const logger = new Logger('SlackClient');
 @Injectable()
 export class SlackClient {
   private client: WebClient;
@@ -73,9 +73,10 @@ export class SlackClient {
         .replace(END_TEXT, '')
         .replace(prevCompletion, '')
         .trim();
+      logger.log(`nextCompletion: \n${nextCompletion}\n`);
       if (lastMessage && !lastMessage.text.endsWith(END_TEXT)) {
         callback && callback(nextCompletion, STATUS.STOP);
-        return nextCompletion;
+        return lastMessage.text;
       }
       callback && callback(nextCompletion, STATUS.CONTINUE);
       /**

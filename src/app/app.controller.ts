@@ -36,15 +36,23 @@ export class AppController {
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
-      return await this.appService.getSlackChatCompletionStream(
-        message,
-        (completion, status) => {
-          res.write(`data: ${completion}\n\n`);
-          if (status === STATUS.STOP) {
-            res.end();
-          }
-        },
-      );
+      if (process.env.SPLIT_STREAM !== 'false') {
+        return await this.appService.getSlackChatCompletionStream(
+          message,
+          (completion, status) => {
+            res.write(`data: ${completion}\n\n`);
+            if (status === STATUS.STOP) {
+              res.end();
+            }
+          },
+        );
+      } else {
+        const completion = await this.appService.getSlackChatCompletion(
+          message,
+        );
+        res.write(`data: ${JSON.stringify(completion)}\n\n`);
+        return res.end();
+      }
     }
     const response = await this.appService.getSlackChatCompletion(message);
     return res.json(response);

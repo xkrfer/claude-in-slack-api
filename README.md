@@ -15,6 +15,7 @@ Use the Slack API to send messages to Claude and receive his replies through the
     CLAUDE_BOT_ID=your_CLAUDE_BOT_ID
     SLACK_USER_TOKEN=your_SLACK_USER_TOKEN
     TOKEN=your_TOKEN # any string you like
+    SPLIT_STREAM=true # whether to split the stream, if false will return all the results at once
     ```
 2. Run
     ```bash
