@@ -3,6 +3,7 @@ import { ICallback, IMessage, STATUS } from '../types/types';
 import { HttpService } from '@nestjs/axios';
 import { SlackClient } from '../clients/slack.client';
 import { generateResponse } from '../utils/utils';
+import {DEFAULT_PREFIX_MESSAGES, DEFAULT_SUFFIX_MESSAGES} from "../utils/const";
 
 const role_map = {
   system: 'Human',
@@ -20,7 +21,11 @@ export class AppService {
   }
 
   async transformMessage(messages: IMessage[]) {
-    return messages.reduce((acc, message) => {
+    return [
+      ...DEFAULT_PREFIX_MESSAGES,
+      ...messages,
+      ...DEFAULT_SUFFIX_MESSAGES,
+    ].reduce((acc, message) => {
       if (role_map[message.role] === 'Human') {
         acc += `Human: ${message.content}\n`;
       } else {

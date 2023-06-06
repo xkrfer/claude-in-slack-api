@@ -38,6 +38,7 @@ export class AppController {
           (completion, status) => {
             res.write(`data: ${completion}\n\n`);
             if (status === STATUS.STOP) {
+              res.write(`data: [DONE]`);
               res.end();
             }
           },
@@ -45,8 +46,10 @@ export class AppController {
       } else {
         const completion = await this.appService.getSlackChatCompletion(
           message,
+          true,
         );
         res.write(`data: ${JSON.stringify(completion)}\n\n`);
+        res.write(`data: [DONE]`);
         return res.end();
       }
     }
