@@ -1,7 +1,7 @@
-import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
+import { HttpStatus, Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-
+const logger = new Logger('AuthMiddleware');
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(private readonly configService: ConfigService) {}
@@ -14,6 +14,7 @@ export class AuthMiddleware implements NestMiddleware {
       res.status(401).send({
         message: 'Unauthorized',
       });
+      logger.error('Unauthorized');
       return;
     }
     const token = authHeader.split(' ')[1];
@@ -21,6 +22,7 @@ export class AuthMiddleware implements NestMiddleware {
       res.status(403).send({
         message: 'Invalid Token',
       });
+      logger.error('Invalid Token', token, TOKEN);
       return;
     }
 
@@ -28,6 +30,7 @@ export class AuthMiddleware implements NestMiddleware {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         message: 'Invalid SLACK_USER_TOKEN',
       });
+      logger.error('Invalid SLACK_USER_TOKEN');
       return;
     }
 
@@ -35,6 +38,7 @@ export class AuthMiddleware implements NestMiddleware {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         message: 'Invalid CLAUDE_BOT_ID',
       });
+      logger.error('Invalid CLAUDE_BOT_ID');
       return;
     }
     try {

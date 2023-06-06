@@ -41,8 +41,3 @@ export function generateResponse(
     ],
   };
 }
-
-export function getEnvPath(): string {
-  const env = process.env?.NODE_ENV === 'production' ? '.env' : '.env.local';
-  return path.resolve(process.cwd(), `./config/${env}`);
-}
