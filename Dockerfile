@@ -56,6 +56,7 @@ FROM node:18-alpine As production
 # 将生产依赖和打包后的文件复制到指定目录下
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
-
+# 设置生产环境变量
+ENV NODE_ENV production
 # 启动服务
 CMD [ "node", "dist/main.js" ]
