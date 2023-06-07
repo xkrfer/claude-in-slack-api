@@ -3,7 +3,10 @@ import { ICallback, IMessage, STATUS } from '../types/types';
 import { HttpService } from '@nestjs/axios';
 import { SlackClient } from '../clients/slack.client';
 import { generateResponse } from '../utils/utils';
-import {DEFAULT_PREFIX_MESSAGES, DEFAULT_SUFFIX_MESSAGES} from "../utils/const";
+import {
+  DEFAULT_PREFIX_MESSAGES,
+  DEFAULT_SUFFIX_MESSAGES,
+} from '../utils/const';
 
 const role_map = {
   system: 'Human',
